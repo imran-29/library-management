@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_BOOKS 100
+
+// Structure to store book details
+struct Book {
+    int bookID;
+    char title[50];
+    char author[50];
+    int year;
+};
+
+// Function to add a book
+void addBook(struct Book library[], int *count) {
+    printf("Enter Book ID: ");
+    scanf("%d", &library[*count].bookID);
+    getchar();  // To consume newline character
+
+    printf("Enter Book Title: ");
+    fgets(library[*count].title, 50, stdin);
+    library[*count].title[strcspn(library[*count].title, "\n")] = 0;  // Remove newline
+
+    printf("Enter Author Name: ");
+    fgets(library[*count].author, 50, stdin);
+    library[*count].author[strcspn(library[*count].author, "\n")] = 0;  // Remove newline
+
+    printf("Enter Year of Publication: ");
+    scanf("%d", &library[*count].year);
+
+    (*count)++;
+    printf("Book added successfully!\n\n");
+}
+
+// Function to display all books
+void displayBooks(struct Book library[], int count) {
+    if (count == 0) {
+        printf("No books in the library.\n\n");
+        return;
+    }
+
+    printf("Library Books:\n");
+    for (int i = 0; i < count; i++) {
+        printf("ID: %d\n", library[i].bookID);
+        printf("Title: %s\n", library[i].title);
+        printf("Author: %s\n", library[i].author);
+        printf("Year: %d\n\n", library[i].year);
+    }
+}
+
+// Function to search a book by ID
+void searchBookByID(struct Book library[], int count) {
+    int bookID;
+    printf("Enter Book ID to search: ");
+    scanf("%d", &bookID);
+
+    for (int i = 0; i < count; i++) {
+        if (library[i].bookID == bookID) {
+            printf("Book Found:\n");
+            printf("ID: %d\n", library[i].bookID);
+            printf("Title: %s\n", library[i].title);
+            printf("Author: %s\n", library[i].author);
+            printf("Year: %d\n\n", library[i].year);
+            return;
+        }
+    }
+
+    printf("Book with ID %d not found.\n\n", bookID);
+}
+
+int main() {
+    struct Book library[MAX_BOOKS];
+    int count = 0;
+    int choice;
+
+    while (1) {
+        printf("Library Management System\n");
+        printf("1. Add Book\n");
+        printf("2. Display Books\n");
+        printf("3. Search Book by ID\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addBook(library, &count);
+                break;
+            case 2:
+                displayBooks(library, count);
+                break;
+            case 3:
+                searchBookByID(library, count);
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
